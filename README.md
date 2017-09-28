@@ -18,7 +18,11 @@ Each tasks are linked and will help you to: - put in place a parent class (calle
 
 
 ## Syntax
-The AirBnB works by using commands given by the user input.
+The AirBnB works by the following commands:
+* `how to start it`
+* `how to use it`
+* `examples`
+
 
 
 ### List of useful commands
