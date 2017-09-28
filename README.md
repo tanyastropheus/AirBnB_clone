@@ -1,0 +1,1 @@
+This is PART I of the AirBnB Clone project at Holberton School.
