@@ -1,8 +1,6 @@
 #!/usr/bin/python3
 from datetime import datetime
-from time import strftime
 import uuid
-time = "%Y-%m-%dT%H:%M:%S.%f"
 
 
 """defines all common attributes/methods for other classes"""
