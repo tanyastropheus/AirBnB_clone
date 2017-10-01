@@ -13,12 +13,10 @@ class BaseModel:
             storage.new()  # store instance in dictionary to save to file later
 
         else:
-            print("test: ", kwargs.items())
-
             for k, v in kwargs.items():
                 if k == 'created_at' or k == 'updated_at':
                     v = self.to_datetime(v)
-                setattr(self, k, v)
+                self.__dict__[k] = v
 
             if 'id' not in self.__dict__:
                 self.id = str(uuid.uuid4())

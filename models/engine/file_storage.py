@@ -27,15 +27,15 @@ class FileStorage:
         """serializes __objects to the JSON file"""
         try:
             with open(FileStorage.__file_path, 'w') as f:  # 'w' vs 'a'?
-                json.dump(FileStorage.__objects, f)
-        except FileNotFoundError:
-            print ("json file does not exist")  # what action should we take?
+                f.write(json.dumps(FileStorage.__objects))
+        except:
+            pass
 
 
     def reload(self):
         """deserializes the JSON file to __objects if JSON file exists"""
         try:
             with open(FileStorage.__file_path, 'r') as f:
-                FileStorage.__objects = json.load(f)
+                FileStorage.__objects = json.loads(f.read())
         except:
             pass
