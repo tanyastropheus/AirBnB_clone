@@ -9,21 +9,19 @@ import uuid
 class BaseModel:
     """Public instance attributes"""
     def __init__(self, *args, **kwargs):
+        # set the default first
+        self.id = str(uuid.uuid4())
+        self.created_at = datetime.now()
+        self.updated_at = self.created_at
+
         if kwargs is None:  # if it's a new instance (not from dict reprsntion)
             storage.new()  # store instance in dictionary to save to file later
 
-        else:
+        else:  # set given attribute from kwargs
             for k, v in kwargs.items():
                 if k == 'created_at' or k == 'updated_at':
                     v = self.to_datetime(v)
                 self.__dict__[k] = v
-
-            if 'id' not in self.__dict__:
-                self.id = str(uuid.uuid4())
-            if 'created_at' not in self.__dict__:
-                self.created_at = datetime.now()
-            if 'updated_at' not in self.__dict__:
-                self.updated_at = self.created_at
 
     def to_datetime(self, string):
         """convert datetime string to datetime object"""
