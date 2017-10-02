@@ -24,7 +24,6 @@ class FileStorage:
         class_name = obj.__class__.__name__
         FileStorage.__objects["{}.{}".format(class_name, obj.id)] = obj
         # obj calls __str__() when print() is called
-#        print("After storing attributes to __objects", FileStorage.__objects)
 
     def save(self):
         """serializes __objects to the JSON file"""
