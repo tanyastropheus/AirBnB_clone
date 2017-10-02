@@ -25,7 +25,6 @@ class BaseModel:
             # set given attribute from kwargs
             for k, v in kwargs.items():
                 if k == 'created_at' or k == 'updated_at':
-                    print(v, type(v))
                     v = self.to_datetime(v)
                 self.__dict__[k] = v
 
