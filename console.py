@@ -4,7 +4,7 @@
 import json
 import cmd
 import models
-import storage
+from models.engine.file_storage import FileStorage
 
 class HBNBCommand(cmd.Cmd):
     intro = """
