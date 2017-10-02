@@ -17,7 +17,7 @@ class HBNBCommand(cmd.Cmd):
                 **************************************************************
             """
 
-    prompt = "(hbnb)"
+    prompt = "(hbnb) "
 
     def do_quit(self, arg):
         """quit to exit the program"""
@@ -38,19 +38,21 @@ class HBNBCommand(cmd.Cmd):
         """import withing method otherwise circular"""
         from models.base_model import BaseModel
         """Creates a new instance of BaseModel"""
+        arg = arg.split()
         if arg[0] and len(arg) == 1:
-             new_instance = ["BaseModel"]
+             new_instance = BaseModel()
              print(new_instance.id)
 
-        if len(arg) == 0 or arg is None:
+        elif len(arg) == 0 or arg is None:
             """If the class name is missing"""
             print("** class name missing **")
         else:
             """If the class name doesn't exist"""
             print("** class doesn't exist **")
         """saves it (to the JSON file) """
-        storage.save()
+        models.storage.save()
 
+    def do_show(self, arg):
 
 
 
