@@ -32,7 +32,7 @@ class FileStorage:
         try:
             with open(FileStorage.__file_path, 'w', encoding="UTF8") as f:
                 for k, v in FileStorage.__objects.items():
-                    # k is a class object
+                    # v is a class object
                     to_JSON_dict[k] = v.to_dict()
                 json.dump(to_JSON_dict, f)
         except:  # error type TBD
@@ -48,7 +48,6 @@ class FileStorage:
                     for key, value in v.items():
                         attrs[key] = value
                     del attrs['__class__']
-                    print("attributes:", attrs)
                     class_obj = BaseModel(**attrs)
                     FileStorage.__objects.update({k: class_obj})
 
