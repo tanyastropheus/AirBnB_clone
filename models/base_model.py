@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 from datetime import datetime
-from models import storage # import var created in __init__ under models/
+import models  # why doesn't 'from models import storage' work?
+# import var created in __init__ under models/
 import uuid
 
 """defines all common attributes/methods for other classes"""
@@ -14,12 +15,17 @@ class BaseModel:
         self.created_at = datetime.now()
         self.updated_at = self.created_at
 
-        if kwargs is None:  # if it's a new instance (not from dict reprsntion)
-            storage.new()  # store instance in dictionary to save to file later
+        # if it's a new instance (not from dict reprsntion)
+        # when nothing is passed to kwargs, it defaults to {}
+        if not kwargs or kwargs is None:
+            # store instance in dict to save to file later
+            models.storage.new(self)
 
-        else:  # set given attribute from kwargs
+        else:
+            # set given attribute from kwargs
             for k, v in kwargs.items():
                 if k == 'created_at' or k == 'updated_at':
+                    print(v, type(v))
                     v = self.to_datetime(v)
                 self.__dict__[k] = v
 
@@ -38,7 +44,7 @@ class BaseModel:
     def save(self):
         """updates the public instance attribute"""
         self.updated_at = datetime.now()
-        storage.save()
+        models.storage.save()
 
     def to_dict(self):
         """returns a dictionary containing all keys/values of"""
