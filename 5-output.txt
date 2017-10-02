@@ -1,3 +1,0 @@
--- Reloaded objects --
--- Create a new object --
-[BaseModel] (cfd6d335-1a43-4215-aa78-ab8ab884c980) {'id': 'cfd6d335-1a43-4215-aa78-ab8ab884c980', 'my_number': 89, 'updated_at': datetime.datetime(2017, 10, 1, 5, 36, 18, 109717), 'name': 'Holberton', 'created_at': datetime.datetime(2017, 10, 1, 5, 36, 18, 109703)}
