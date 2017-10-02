@@ -29,6 +29,10 @@ class HBNBCommand(cmd.Cmd):
         return True
 
     def emptyline(self):
+        """
+        overloads the emptyline method (that would revert back to the last command);
+        This will make console display prompt again.
+        """
         pass
 
 if __name__ == '__main__':
