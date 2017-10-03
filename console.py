@@ -69,7 +69,7 @@ class HBNBCommand(cmd.Cmd):
         if len(arg) == 0:
             print("** class name missing **")
 
-        elif arg[0] not in HBNBCommand.class_list:
+        elif arg[0] not in models.classes:
             print("** class doesn't exist **")
 
         elif len(arg) == 1:
@@ -101,7 +101,7 @@ class HBNBCommand(cmd.Cmd):
             '''if class name is missing'''
             print("** class name missing **")
 
-        elif arg[0] not in HBNBCommand.class_list:
+        elif arg[0] not in models.classes:
             print("** class doesn't exist **")
 
         elif len(arg) == 1:
@@ -123,7 +123,7 @@ class HBNBCommand(cmd.Cmd):
         Print all string representation of all instances
         based on the class name
         '''
-        arg = arg.split() 
+        arg = arg.split()
         stored_objects = models.storage.all()
 
         if len(arg) == 1:
@@ -132,7 +132,7 @@ class HBNBCommand(cmd.Cmd):
                 print("STORED OBJECTS")
                 print(stored_objects)
                 print("STORED OBJECTS DONE")
-                for k, v in stored_objects.items():    
+                for k, v in stored_objects.items():
                     if arg[0] in k:
                         print(v)
             else:
