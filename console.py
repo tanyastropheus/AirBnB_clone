@@ -21,7 +21,6 @@ class HBNBCommand(cmd.Cmd):
 
     prompt = "(hbnb) "
 
-
     def do_quit(self, arg):
         """quit to exit the program"""
         return True
@@ -126,21 +125,20 @@ class HBNBCommand(cmd.Cmd):
         arg = arg.split()
         stored_objects = models.storage.all()
 
-        if len(arg) == 1:
-            print("inside if")
-            if arg[0] in models.classes:
-                print("STORED OBJECTS")
-                print(stored_objects)
-                print("STORED OBJECTS DONE")
+        if len(arg) == 1:  # if given class name
+            if arg[0] in models.classes:  # if class name exists
                 for k, v in stored_objects.items():
+                    '''print out corresponding instances'''
                     if arg[0] in k:
                         print(v)
             else:
                 print("** class doesn't exist **")
 
-        else:
+        elif len(arg) == 0:  # if not specifying class name
+            '''print out all instances'''
             for v in stored_objects.values():
                 print(v)
+        #else (pass?)
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
