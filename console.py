@@ -62,6 +62,7 @@ class HBNBCommand(cmd.Cmd):
         class_list = ['BaseModel']
         """get FileStorage.__objects"""
         stored_objects = models.storage.all()
+        """create a list of id from storage"""
         id_list = [k.split(".")[1] for k in stored_objects.keys()]
 
         if len(arg) == 0:
@@ -77,7 +78,6 @@ class HBNBCommand(cmd.Cmd):
         elif arg[1] not in id_list:
             """given id does not exist"""
             print("** instance id missing **")
-
 
         else:
             """get '<class_name>.id' to match key in FileStorage.__objects"""
