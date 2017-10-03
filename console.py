@@ -134,6 +134,13 @@ class HBNBCommand(cmd.Cmd):
             """overwrite the new data to file.json"""
             models.storage.save()
 
+    def do_all(self, arg):
+        '''
+        Print all string representation of all instances
+        based on the class name
+        '''
+        arg = arg.split()
+        if arg
 
 
 if __name__ == '__main__':
