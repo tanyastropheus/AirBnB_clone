@@ -1,7 +1,18 @@
 #!/usr/bin/python3
+
+
 from models.base_model import BaseModel
+from models.user import User
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.place import Place
+from models.review import Review
+
 from datetime import datetime
 import json
+
+"""Update FileStorage to manage correctly serialization and deserialization of User."""
 
 
 class FileStorage:
@@ -42,6 +53,8 @@ class FileStorage:
         """deserializes the JSON file to __objects if JSON file exists"""
         attrs = {}
         time = "%Y-%m-%dT%H:%M:%S.%f"
+
+        
         try:
             with open(FileStorage.__file_path, 'r', encoding="UTF8") as f:
                 for k, v in json.loads(f.read()).items():

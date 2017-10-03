@@ -20,8 +20,17 @@ class HBNBCommand(cmd.Cmd):
             """
 
     prompt = "(hbnb) "
+    
+    classes = {
+        "BaseModel": BaseModel,
+        "User": User,
+        "State": State,
+        "City": City,
+        "Amenity": Amenity,
+        "Place": Place,
+        "Review": Review
+        }
 
-    class_list = ['BaseModel']  # need to revisit to make to moduler
 
     def do_quit(self, arg):
         """quit to exit the program"""
@@ -61,7 +70,6 @@ class HBNBCommand(cmd.Cmd):
 
     def do_show(self, arg):
         """Prints the string representation of an instance"""
-
         arg = arg.split()
         """get FileStorage.__objects"""
         stored_objects = models.storage.all()
@@ -119,6 +127,8 @@ class HBNBCommand(cmd.Cmd):
                 del stored_objects[instance]
             """overwrite the new data to file.json"""
             models.storage.save()
+
+
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
