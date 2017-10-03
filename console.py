@@ -6,12 +6,6 @@ import cmd
 import models
 from models.base_model import BaseModel
 from models.engine.file_storage import FileStorage
-from models.user import User
-from models.state import State
-from models.city import City
-from models.amenity import Amenity
-from models.place import Place
-from models.review import Review
 
 
 class HBNBCommand(cmd.Cmd):
@@ -26,16 +20,6 @@ class HBNBCommand(cmd.Cmd):
             """
 
     prompt = "(hbnb) "
-
-    classes = {
-        "BaseModel": BaseModel,
-        "User": User,
-        "State": State,
-        "City": City,
-        "Amenity": Amenity,
-        "Place": Place,
-        "Review": Review
-        }
 
 
     def do_quit(self, arg):
@@ -60,7 +44,7 @@ class HBNBCommand(cmd.Cmd):
         arg = arg.split()
         if arg[0] and len(arg) == 1:
             # need to check against a list of given class names
-            new_instance = self.classes.get(arg[0])()
+            new_instance = models.classes[arg[0]]()
             print(new_instance.id)
 
         elif len(arg) == 0:
@@ -139,9 +123,24 @@ class HBNBCommand(cmd.Cmd):
         Print all string representation of all instances
         based on the class name
         '''
-        arg = arg.split()
-        if arg
+        arg = arg.split() 
+        stored_objects = models.storage.all()
 
+        if len(arg) == 1:
+            print("inside if")
+            if arg[0] in models.classes:
+                print("STORED OBJECTS")
+                print(stored_objects)
+                print("STORED OBJECTS DONE")
+                for k, v in stored_objects.items():    
+                    if arg[0] in k:
+                        print(v)
+            else:
+                print("** class doesn't exist **")
+
+        else:
+            for v in stored_objects.values():
+                print(v)
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
