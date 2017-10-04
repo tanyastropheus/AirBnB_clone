@@ -126,6 +126,9 @@ class HBNBCommand(cmd.Cmd):
         stored_objects = models.storage.all()
 
         if len(arg) == 1:  # if given class name
+            print("STORED OBJECTS:")
+            print(stored_objects)
+            print("STORED OBJECTS DONE")
             if arg[0] in models.classes:  # if class name exists
                 for k, v in stored_objects.items():
                     '''print out corresponding instances'''
@@ -139,6 +142,32 @@ class HBNBCommand(cmd.Cmd):
             for v in stored_objects.values():
                 print(v)
         #else (pass?)
+
+    def do_update(self, arg):
+        '''update an instance & save the change to the JSON file'''
+        arg = arg.split()
+        stored_objects = models.storage.all()
+        id_list = [k.split(".")[1] for k in stored_objects.keys()]
+
+        if len(arg) == 0:
+            print("** class name missing **")
+        elif arg[0] not in models.classes:
+            print("** class doesn't exist **")
+        elif len(arg) == 1:
+            print("** instance id missing **")
+        elif arg[1] not in id_list:
+            print("** no instance found **")
+        elif len(arg) == 2:
+            print("** attribute name missing **")
+        elif len(arg) == 3:
+            print("** value missing **")
+        else:
+            instance = "{}.{}".format(arg[0], arg[1])
+            obj = stored_objects[instance]
+            '''convert to the right attribute value type'''
+            updated_value = json.loads(arg[3])
+            setattr(obj, arg[2], updated_value)
+            models.storage.save()
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
