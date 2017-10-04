@@ -1,18 +1,8 @@
 #!/usr/bin/python3
 
-
-from models.base_model import BaseModel
-from models.user import User
-from models.state import State
-from models.city import City
-from models.amenity import Amenity
-from models.place import Place
-from models.review import Review
-
-from datetime import datetime
+import models
 import json
-
-"""Update FileStorage to manage correctly serialization and deserialization of User."""
+from datetime import datetime
 
 
 class FileStorage:
@@ -31,7 +21,13 @@ class FileStorage:
         return FileStorage.__objects
 
     def new(self, obj):
-        """set in __objects the obj with key <obj class name>.id"""
+        """
+        Set in __objects the obj with key <obj class name>.id
+
+        Args:
+            obj: an instance of the class to be saved to the data storage
+
+        """
         class_name = obj.__class__.__name__
         FileStorage.__objects["{}.{}".format(class_name, obj.id)] = obj
         # obj calls __str__() when print() is called
@@ -54,14 +50,16 @@ class FileStorage:
         attrs = {}
         time = "%Y-%m-%dT%H:%M:%S.%f"
 
-        
         try:
             with open(FileStorage.__file_path, 'r', encoding="UTF8") as f:
                 for k, v in json.loads(f.read()).items():
                     for key, value in v.items():
+                        '''construct a dictionary of attributes'''
                         attrs[key] = value
+                    class_name = attrs['__class__']
                     del attrs['__class__']
-                    class_obj = BaseModel(**attrs)
+                    '''recreate instance of the proper class'''
+                    class_obj = models.classes[class_name](**attrs)
                     FileStorage.__objects.update({k: class_obj})
 
         except (ValueError, FileNotFoundError):
