@@ -41,7 +41,7 @@ class HBNBCommand(cmd.Cmd):
         """Creates a new instance of BaseModel"""
 
         arg = arg.split()
-        if arg[0] and len(arg) == 1:
+        if len(arg) == 1:
             # need to check against a list of given class names
             new_instance = models.classes[arg[0]]()
             print(new_instance.id)
@@ -141,7 +141,6 @@ class HBNBCommand(cmd.Cmd):
             '''print out all instances'''
             for v in stored_objects.values():
                 print(v)
-        #else (pass?)
 
     def do_update(self, arg):
         '''update an instance & save the change to the JSON file'''
