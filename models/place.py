@@ -22,3 +22,4 @@ class Place(BaseModel):
     def __init__(self, *args, **kwargs):
         """create new city"""
         super().__init__(self, *args, **kwargs)
+        
