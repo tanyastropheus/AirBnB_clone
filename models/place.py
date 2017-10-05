@@ -19,7 +19,18 @@ class Place(BaseModel):
     longitude = 0.0
     amenity_ids = ["", ""]
 
-    def __init__(self, *args, **kwargs):
-        """create new city"""
-        super().__init__(self, *args, **kwargs)
-        
+    def __setattr__(self, name, value):
+        if name == "number_rooms" and type(value) == str:
+            self.number_rooms = int(value)
+        elif name == "number_bathrooms" and type(value) == str:
+            self.number_bathrooms = int(value)
+        elif name  == "max_guest" and type(value) == str:
+            self.max_guest = int(value)
+        elif name == "price_by_night" and type(value) == str:
+            self.price_by_night = int(value) 
+        elif name == "latitude" and type(value) == str:
+            self.latitude = float(value)
+        elif name == "longitude" and type(value) == str:
+            self.longitude = float(value)
+        else:
+            super().__setattr__(name, value)

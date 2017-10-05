@@ -32,8 +32,8 @@ class BaseModel:
         """convert datetime string to datetime object"""
         time = "%Y-%m-%dT%H:%M:%S.%f"
         return datetime.strptime(string, time)
-
-    def __str__(self):
+    
+   def __str__(self):
         """print class name, id, dict"""
         a = self.__class__.__name__
         b = self.id

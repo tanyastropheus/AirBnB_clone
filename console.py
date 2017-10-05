@@ -9,16 +9,7 @@ from models.engine.file_storage import FileStorage
 
 
 class HBNBCommand(cmd.Cmd):
-    intro = """
-                **************************************************************
-                *                                                            *
-                *                  'Welcome to HBNB!'                        *
-                *                                                            *
-                *              'Type help to list commands'                  *
-                *                                                            *
-                **************************************************************
-            """
-
+    
     prompt = "(hbnb) "
 
     def do_quit(self, arg):
@@ -126,9 +117,6 @@ class HBNBCommand(cmd.Cmd):
         stored_objects = models.storage.all()
 
         if len(arg) == 1:  # if given class name
-            print("STORED OBJECTS:")
-            print(stored_objects)
-            print("STORED OBJECTS DONE")
             if arg[0] in models.classes:  # if class name exists
                 for k, v in stored_objects.items():
                     '''print out corresponding instances'''
@@ -164,8 +152,7 @@ class HBNBCommand(cmd.Cmd):
             instance = "{}.{}".format(arg[0], arg[1])
             obj = stored_objects[instance]
             '''convert to the right attribute value type'''
-            updated_value = json.loads(arg[3])
-            setattr(obj, arg[2], updated_value)
+            setattr(obj, arg[2], arg[3])
             models.storage.save()
 
 if __name__ == '__main__':
