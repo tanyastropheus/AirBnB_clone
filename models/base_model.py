@@ -1,15 +1,16 @@
 #!/usr/bin/python3
+"""defines all common attributes/methods for other classes"""
+
 from datetime import datetime
 import models  # why doesn't 'from models import storage' work?
 # import var created in __init__ under models/
 import uuid
 
-"""defines all common attributes/methods for other classes"""
-
 
 class BaseModel:
     """Public instance attributes"""
     def __init__(self, *args, **kwargs):
+        """initializing instance variables"""
         # set the default first
         self.id = str(uuid.uuid4())
         self.created_at = datetime.now()

@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+"""FileStorage module that handles data storage"""
 
 import models
 import json

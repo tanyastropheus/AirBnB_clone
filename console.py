@@ -9,6 +9,7 @@ from models.engine.file_storage import FileStorage
 
 
 class HBNBCommand(cmd.Cmd):
+    """creates a console for testing AirBnB setup"""
     prompt = "(hbnb) "
 
     def do_quit(self, arg):

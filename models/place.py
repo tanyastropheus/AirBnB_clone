@@ -17,9 +17,10 @@ class Place(BaseModel):
     price_by_night = 0
     latitude = 0.0
     longitude = 0.0
-    amenity_ids = ["", ""]
+    amenity_ids = []
 
     def __setattr__(self, name, value):
+        """overloads  __setattr__ from parent to check attribute value type"""
         if name == "number_rooms" and type(value) == str:
             self.number_rooms = int(value)
         elif name == "number_bathrooms" and type(value) == str:
