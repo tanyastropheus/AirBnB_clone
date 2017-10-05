@@ -32,7 +32,7 @@ class HBNBCommand(cmd.Cmd):
     def do_create(self, arg):
         """Creates a new instance of BaseModel"""
 
-        arg = arg.split()
+        arg = shlex.split(arg)
         if len(arg) == 0:
             print("** class name missing **")
 
@@ -48,7 +48,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_show(self, arg):
         """Prints the string representation of an instance"""
-        arg = arg.split()
+        arg = shlex.split(arg)
         """get FileStorage.__objects"""
         stored_objects = models.storage.all()
         """create a list of id from storage"""
@@ -64,24 +64,25 @@ class HBNBCommand(cmd.Cmd):
             """missing id"""
             print("** instance id missing **")
 
-        elif arg[1] not in id_list:
-            """given id does not exist"""
-            print("** no instance found **")
-
         else:
             """get '<class_name>.id' to FileStorage.__objects key format"""
             instance = "{}.{}".format(arg[0], arg[1])
-            """search matching class object"""
-            for k, v in stored_objects.items():
-                if k == instance:
-                    print(v)
+            if instance not in stored_objects:
+                """given id does not exist"""
+                print("** no instance found **")
+
+            else:
+                """search matching class object"""
+                for k, v in stored_objects.items():
+                    if k == instance:
+                        print(v)
 
     def do_destroy(self, arg):
         """
         Deletes an instance based on the class name and id & save the change
         into the JSON file.
         """
-        arg = arg.split()
+        arg = shlex.split(arg)
         stored_objects = models.storage.all()
         id_list = [k.split(".")[1] for k in stored_objects.keys()]
 
@@ -95,23 +96,25 @@ class HBNBCommand(cmd.Cmd):
         elif len(arg) == 1:
             print("** instance id missing **")
 
-        elif arg[1] not in id_list:
-            print("** no instance found **")
-
         else:
+            """get '<class_name>.id' to FileStorage.__objects key format"""
             instance = "{}.{}".format(arg[0], arg[1])
-            """delete from FileStorage.__objects"""
-            if instance in stored_objects.keys():
-                del stored_objects[instance]
-            """overwrite the new data to file.json"""
-            models.storage.save()
+            if instance not in stored_objects:
+                """given id does not exist"""
+                print("** no instance found **")
+            else:
+                """delete from FileStorage.__objects"""
+                if instance in stored_objects.keys():
+                    del stored_objects[instance]
+                    """overwrite the new data to file.json"""
+                models.storage.save()
 
     def do_all(self, arg):
         '''
         Print all string representation of all instances
         based on the class name
         '''
-        arg = arg.split()
+        arg = shlex.split(arg)
         stored_objects = models.storage.all()
 
         if len(arg) == 1:  # if given class name
