@@ -24,10 +24,10 @@ class Place(BaseModel):
             self.number_rooms = int(value)
         elif name == "number_bathrooms" and type(value) == str:
             self.number_bathrooms = int(value)
-        elif name  == "max_guest" and type(value) == str:
+        elif name == "max_guest" and type(value) == str:
             self.max_guest = int(value)
         elif name == "price_by_night" and type(value) == str:
-            self.price_by_night = int(value) 
+            self.price_by_night = int(value)
         elif name == "latitude" and type(value) == str:
             self.latitude = float(value)
         elif name == "longitude" and type(value) == str:

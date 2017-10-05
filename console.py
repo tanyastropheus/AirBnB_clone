@@ -9,7 +9,6 @@ from models.engine.file_storage import FileStorage
 
 
 class HBNBCommand(cmd.Cmd):
-    
     prompt = "(hbnb) "
 
     def do_quit(self, arg):
@@ -157,4 +156,3 @@ class HBNBCommand(cmd.Cmd):
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
-"""to pull"""
