@@ -77,6 +77,7 @@ class TestFileStorage(unittest.TestCase):
     def test_new(self):
         """test that new adds an object to the FileStorage.__objects attr"""
         storage = FileStorage()
+        save = FileStorage._FileStorage__objects
         FileStorage._FileStorage__objects = {}
         test_dict = {}
         for key, value in classes.items():
@@ -86,4 +87,4 @@ class TestFileStorage(unittest.TestCase):
                 storage.new(instance)
                 test_dict[instance_key] = instance
                 self.assertEqual(test_dict, storage._FileStorage__objects)
-        storage._FileStorage__objects = {}
+        storage._FileStorage__objects = save
