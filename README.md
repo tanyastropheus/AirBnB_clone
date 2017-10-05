@@ -19,36 +19,44 @@ Each tasks are linked and will help you to: - put in place a parent class (calle
 
 ## Syntax
 The AirBnB works by the following commands:
-* `how to start it`
-* `how to use it`
-* `examples`
+* To start the console for our project you need to type in `./console`.
+* The console take in the following commands and format on how to use them:
+  * `create` : create <Class Name>
+  * `show` : show <Class Name> <id>
+  * `destroy`: destroy <Class Name> <id>  
+  * `all` : all or all <Class Name>
+  * `update` : update <Class Name> <id> <attribute name> <attribute value>
 
+## Example
+   (hbnb) all MyModel
+** class doesn't exist **
+(hbnb) show BaseModel
+** instance id missing **
+(hbnb) show BaseModel Holberton
+** no instance found **
+(hbnb) create BaseModel
+49faff9a-6318-451f-87b6-910505c55907
+(hbnb) all BaseModel
+[[BaseModel] (49faff9a-6318-451f-87b6-910505c55907) {'created_at': datetime.datetime(2017, 10, 2, 3, 10, 25, 903293), 'id': '49faff9a-6318-451f-87b6-910505c55907', 'updated_at': datetime.datetime(2017, 10, 2, 3, 10, 25, 903300)}]
+(hbnb) show BaseModel 49faff9a-6318-451f-87b6-910505c55907
+[BaseModel] (49faff9a-6318-451f-87b6-910505c55907) {'created_at': datetime.datetime(2017, 10, 2, 3, 10, 25, 903293), 'id': '49faff9a-6318-451f-87b6-910505c55907', 'updated_at': datetime.datetime(2017, 10, 2, 3, 10, 25, 903300)}
+(hbnb) destroy
+** class name missing **
+(hbnb) update BaseModel 49faff9a-6318-451f-87b6-910505c55907 first_name "Betty"
+(hbnb) show BaseModel 49faff9a-6318-451f-87b6-910505c55907
+[BaseModel] (49faff9a-6318-451f-87b6-910505c55907) {'first_name': 'Betty', 'id': '49faff9a-6318-451f-87b6-910505c55907', 'created_at': datetime.datetime(2017, 10, 2, 3, 10, 25, 903293), 'updated_at': datetime.datetime(2017, 10, 2, 3, 11, 3, 49401)}
+(hbnb) create BaseModel
+2dd6ef5c-467c-4f82-9521-a772ea7d84e9
+(hbnb) all BaseModel
+[[BaseModel] (2dd6ef5c-467c-4f82-9521-a772ea7d84e9) {'id': '2dd6ef5c-467c-4f82-9521-a772ea7d84e9', 'created_at': datetime.datetime(2017, 10, 2, 3, 11, 23, 639717), 'updated_at': datetime.datetime(2017, 10, 2, 3, 11, 23, 639724)}, [BaseModel] (49faff9a-6318-451f-87b6-910505c55907) {'first_name': 'Betty', 'id': '49faff9a-6318-451f-87b6-910505c55907', 'created_at': datetime.datetime(2017, 10, 2, 3, 10, 25, 903293), 'updated_at': datetime.datetime(2017, 10, 2, 3, 11, 3, 49401)}]
+(hbnb) destroy BaseModel 49faff9a-6318-451f-87b6-910505c55907
+(hbnb) show BaseModel 49faff9a-6318-451f-87b6-910505c55907
+** no instance found **
 
-
-### List of useful commands
-* `cat` - prints and concatenates files to the standard output
-* `cp` -copies a file into another file
-* `grep` - helps to search for a file in a specific pattern
-* `less` - will let you go backward and forward in the files
-* `ls` - will list all files and directories in current working directory
-* `mv` - helps to move one file into another file
-* `pwd` - given you the current working directory
-
-
-### Builtins
-There are two builtins programmed into the shell. Below is a description and use for each builtin.
-
-
-### Exiting commands and the shell
-To exit out of a command or process the user can use `ctrl c`. `Control c` stops a process and causes it to abort.
-The user can also utilize the command `ctrl D` which will just exit. When the command `ctrl D` is used an exit status of 0 is given. Using exit, you can input its exit status or it is defaulted to the status of the last command executed.
-
-## Files
-* `README.md` : Current file, contains information about this project
-
-
-### Comments
+### Exiting commands
+To exit out of a command or process the user can use `quit`, `exit` stops a process and causes it to abort.
+The user can also utilize the command `ctrl D` which will just exit. 
 
 ### Authors
 * Wendy Segura - https://github.com/wendysegura
-* anya Kryukova - https://github.com/tanyastropheus
+* Tanya Kryukova - https://github.com/tanyastropheus
