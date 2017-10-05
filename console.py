@@ -33,18 +33,15 @@ class HBNBCommand(cmd.Cmd):
         """Creates a new instance of BaseModel"""
 
         arg = arg.split()
-        if len(arg) == 1:
-            # need to check against a list of given class names
-            new_instance = models.classes[arg[0]]()
-            print(new_instance.id)
-
-        elif len(arg) == 0:
-            """If the class name is missing"""
+        if len(arg) == 0:
             print("** class name missing **")
 
-        else:
-            """If the class name doesn't exist"""
-            print("** class doesn't exist **")
+        elif len(arg) == 1:
+            if arg[0] in models.classes:
+                new_instance = models.classes[arg[0]]()
+                print(new_instance.id)
+            else:
+                print("** class doesn't exist **")
 
         """saves it (to the JSON file) """
         models.storage.save()
