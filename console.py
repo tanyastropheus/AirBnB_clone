@@ -36,15 +36,15 @@ class HBNBCommand(cmd.Cmd):
         if len(arg) == 0:
             print("** class name missing **")
 
-        elif len(arg) == 1:
-            if arg[0] in models.classes:
-                new_instance = models.classes[arg[0]]()
-                print(new_instance.id)
-            else:
-                print("** class doesn't exist **")
+        elif arg[0] in models.classes:
+            new_instance = models.classes[arg[0]]()
+            print(new_instance.id)
+            """saves it (to the JSON file) """
+            models.storage.save()
 
-        """saves it (to the JSON file) """
-        models.storage.save()
+        else:
+            print("** class doesn't exist **")
+
 
     def do_show(self, arg):
         """Prints the string representation of an instance"""
