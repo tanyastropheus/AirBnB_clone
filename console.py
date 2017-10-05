@@ -4,6 +4,7 @@
 import json
 import cmd
 import models
+import shlex
 from models.base_model import BaseModel
 from models.engine.file_storage import FileStorage
 
@@ -132,7 +133,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_update(self, arg):
         '''update an instance & save the change to the JSON file'''
-        arg = arg.split()
+        arg = shlex.split(arg)
         stored_objects = models.storage.all()
         id_list = [k.split(".")[1] for k in stored_objects.keys()]
 
