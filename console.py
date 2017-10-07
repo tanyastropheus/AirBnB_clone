@@ -157,6 +157,19 @@ class HBNBCommand(cmd.Cmd):
             models.storage.save()
 
     def default(self, arg):
+        """
+        add the following functionalities to the commandline:
+
+        <class name>.all(): retrieve all instances of a class
+        <class name>.count(): retrieve the number of instances of a class
+        <class name>.show(<id>): retrieve the an instance based on its ID
+        <class name>.destroy(<id>): destroy an instance based on its ID
+        <class name>.update(<id>, <attribute name>, <attribute value>): update
+        an instance based on its ID
+        <class name>.update(<id>, <dictionary representation>): update an
+        instance based on its ID with a dictionary
+
+        """
         args = arg.split('.')
         stored_objects = models.storage.all()
         if len(args) == 2:
@@ -166,18 +179,25 @@ class HBNBCommand(cmd.Cmd):
                         if args[0] in k:
                             print(v)
                 elif args[1] == 'count()':
-                    count = 0
-                    for k in stored_objects:
-                        inst_list = k.split('.')
-                        if inst_list[0] == args[0]:
-                            count += 1
-                    print(count)
+                    print(self.count(stored_objects, args))
                 else:
                     print("**command not found**")
             else:
                 print("**class doesn't exist**")
         else:
             super().default(arg)
+
+    def count(self, instance_dict, args):
+        count = 0
+        for k in instance_dict:
+            inst_list = k.split('.')
+            if inst_list[0] == args[0]:
+                count += 1
+        return count
+'''
+    def show(self, arg):
+        args = arg,split('.')
+'''
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
