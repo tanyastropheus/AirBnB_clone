@@ -158,13 +158,20 @@ class HBNBCommand(cmd.Cmd):
 
     def default(self, arg):
         args = arg.split('.')
+        stored_objects = models.storage.all()
         if len(args) == 2:
             if args[0] in models.classes:
                 if args[1] == 'all()':
-                    stored_objects = models.storage.all()
                     for k, v in stored_objects.items():
                         if args[0] in k:
                             print(v)
+                elif args[1] == 'count()':
+                    count = 0
+                    for k in stored_objects:
+                        inst_list = k.split('.')
+                        if inst_list[0] == args[0]:
+                            count += 1
+                    print(count)
                 else:
                     print("**command not found**")
             else:
