@@ -5,6 +5,7 @@ import json
 import cmd
 import models
 import shlex
+import re
 from models.base_model import BaseModel
 from models.engine.file_storage import FileStorage
 
@@ -44,7 +45,6 @@ class HBNBCommand(cmd.Cmd):
 
         else:
             print("** class doesn't exist **")
-
 
     def do_show(self, arg):
         """Prints the string representation of an instance"""
@@ -119,10 +119,8 @@ class HBNBCommand(cmd.Cmd):
 
         if len(args) == 1:  # if given class name
             if args[0] in models.classes:  # if class name exists
-                for k, v in stored_objects.items():
-                    '''print out corresponding instances'''
-                    if args[0] in k:
-                        print(v)
+                self.all(stored_objects, args)
+
             else:
                 print("** class doesn't exist **")
 
@@ -172,32 +170,57 @@ class HBNBCommand(cmd.Cmd):
         """
         args = arg.split('.')
         stored_objects = models.storage.all()
-        if len(args) == 2:
+        if len(args) == 1:
+            print("**class name missing**")
+        elif len(args) == 2:
             if args[0] in models.classes:
                 if args[1] == 'all()':
-                    for k, v in stored_objects.items():
-                        if args[0] in k:
-                            print(v)
+                    self.all(stored_objects, args)
                 elif args[1] == 'count()':
-                    print(self.count(stored_objects, args))
+                    self.count(stored_objects, args)
                 else:
-                    print("**command not found**")
+                    '''retreive function name'''
+                    match_fname = re.match('([a-z]+)', args[1])
+                    if match_fname.group() == 'show':
+                        '''call show()'''
+                        self.show(stored_objects, args[0], args[1])
             else:
                 print("**class doesn't exist**")
         else:
             super().default(arg)
 
+    def all(self, instance_dict, args):
+        """print out corresponding instances"""
+        for k, v in instance_dict.items():
+            if args[0] in k:
+                print(v)
+
     def count(self, instance_dict, args):
+        """count the number of instances corresponding to the class"""
         count = 0
         for k in instance_dict:
             inst_list = k.split('.')
             if inst_list[0] == args[0]:
                 count += 1
-        return count
-'''
-    def show(self, arg):
-        args = arg,split('.')
-'''
+        print(count)
+
+    def show(self, instance_dict, class_name, arg):
+        """retrieve the an instance based on ID"""
+        '''get ("<id>") with parentheses &  double quotes'''
+        id_pre = re.search('\("([a-z0-9-]+)"\)', arg)
+        '''if <id> exists'''
+        if id_pre:
+            '''get <id> as a re object; need to turn into str for formatting'''
+            inst_id = re.search('([a-z0-9-]+)', id_pre.group())
+            instance = "{}.{}".format(class_name, str(inst_id.group()))
+            if instance not in instance_dict:
+                print("**no instance found**")
+            else:
+                for k, v in instance_dict.items():
+                    if k == instance:
+                        print(v)
+        else:
+            print("**** instance id missing **")
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
