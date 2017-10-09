@@ -182,8 +182,8 @@ class HBNBCommand(cmd.Cmd):
                     if match_fname.group() == 'show':
                         '''call show()'''
                         self.show(stored_objects, args[0], args[1])
-                    elif match_fname.group() == 'destroy':
-                        '''call destroy'''
+                    #elif match_fname.group() == 'destroy':
+                        #'''call destroy'''
         else:
             super().default(arg)
 
@@ -218,7 +218,7 @@ class HBNBCommand(cmd.Cmd):
                     if k == instance:
                         print(v)
         else:
-            print("**** instance id missing **")
+            print("** instance id missing **")
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
