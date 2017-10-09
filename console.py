@@ -170,9 +170,7 @@ class HBNBCommand(cmd.Cmd):
         """
         args = arg.split('.')
         stored_objects = models.storage.all()
-        if len(args) == 1:
-            print("**class name missing**")
-        elif len(args) == 2:
+        if len(args) == 2:
             if args[0] in models.classes:
                 if args[1] == 'all()':
                     self.all(stored_objects, args)
@@ -184,8 +182,6 @@ class HBNBCommand(cmd.Cmd):
                     if match_fname.group() == 'show':
                         '''call show()'''
                         self.show(stored_objects, args[0], args[1])
-            else:
-                print("**class doesn't exist**")
         else:
             super().default(arg)
 
