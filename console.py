@@ -182,6 +182,8 @@ class HBNBCommand(cmd.Cmd):
                     if match_fname.group() == 'show':
                         '''call show()'''
                         self.show(stored_objects, args[0], args[1])
+                    elif match_fname.group() == 'destroy':
+                        '''call destroy'''
         else:
             super().default(arg)
 
@@ -210,7 +212,7 @@ class HBNBCommand(cmd.Cmd):
             inst_id = re.search('([a-z0-9-]+)', id_pre.group())
             instance = "{}.{}".format(class_name, str(inst_id.group()))
             if instance not in instance_dict:
-                print("**no instance found**")
+                print("** no instance found **")
             else:
                 for k, v in instance_dict.items():
                     if k == instance:
