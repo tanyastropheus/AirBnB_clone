@@ -182,6 +182,8 @@ class HBNBCommand(cmd.Cmd):
                     elif match_fname.group() == 'destroy':
                         '''call destroy'''
                         self.destroy(stored_objects, args[0], args[1])
+                    elif match_fname.group() == 'update':
+                        self.update(stored_objects, args[0], args[1])
         else:
             super().default(arg)
 
@@ -219,7 +221,7 @@ class HBNBCommand(cmd.Cmd):
             print("** instance id missing **")
 
     def destroy(self, instance_dict, class_name, arg):
-        """retrieve the an instance based on ID"""
+        """destroy an instance based on ID"""
         '''get id'''
         print("string passed:", arg)
         inst_id = re.search('\("(.+)"\)', arg)
@@ -235,6 +237,31 @@ class HBNBCommand(cmd.Cmd):
 
         else:
             print("** instance id missing **")
+
+    def update(self, instance_dict, class_name, arg):
+        """update an instance based on ID, attribute name, and attribute value"""
+        '''get id'''
+        args = re.findall('"([^"]+)",?', arg)
+        id_list = [k.split(".")[1] for k in instance_dict]
+        print(args)
+        print(class_name)
+
+        if class_name not in models.classes:
+            print("** class doesn't exist **")
+        elif len(args) == 0:
+            print("** instance id missing **")
+        elif args[0] not in id_list:
+            print("** no instance found **")
+        elif len(args) == 1:
+            print("** attribute name missing **")
+        elif len(args) == 2:
+            print("** value missing **")
+        else:
+            instance = "{}.{}".format(class_name, args[0])
+            obj = instance_dict[instance]
+            '''convert to the right attribute value type'''
+            setattr(obj, args[1], args[2])
+            models.storage.save()
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
