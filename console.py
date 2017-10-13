@@ -46,13 +46,33 @@ class HBNBCommand(cmd.Cmd):
         else:
             print("** class doesn't exist **")
 
+    def check_instance(self, class_name, inst_id, stored_objects):
+        """
+        check if the instance exists & prints an error message if it doesn't.
+
+        Args:
+            class_name (str): class name of the instance
+            inst_id (str): instance id
+            stored_objects(dict): dictionary of instance "<class_name>.<id>"
+                                  and instance objects
+
+        Returns:
+            "<class_name>.<id>" if the instance exists, False otherwise
+
+        """
+        '''get '<class_name>.id' to FileStorage.__objects key format'''
+        instance = "{}.{}".format(class_name, inst_id)
+        if instance not in stored_objects:
+            """given id does not exist"""
+            print("** no instance found **")
+            instance = False
+        return instance
+
     def do_show(self, arg):
         """Prints the string representation of an instance"""
         args = shlex.split(arg)
         """get FileStorage.__objects"""
         stored_objects = models.storage.all()
-        """create a list of id from storage"""
-        id_list = [k.split(".")[1] for k in stored_objects.keys()]
 
         if len(args) == 0:
             print("** class name missing **")
@@ -65,14 +85,8 @@ class HBNBCommand(cmd.Cmd):
             print("** instance id missing **")
 
         else:
-            """get '<class_name>.id' to FileStorage.__objects key format"""
-            instance = "{}.{}".format(args[0], args[1])
-            if instance not in stored_objects:
-                """given id does not exist"""
-                print("** no instance found **")
-
-            else:
-                """search matching class object"""
+            instance = self.check_instance(args[0], args[1], stored_objects)
+            if instance:
                 print(stored_objects[instance])
 
     def do_destroy(self, arg):
@@ -239,7 +253,7 @@ class HBNBCommand(cmd.Cmd):
             print("** instance id missing **")
 
     def update(self, instance_dict, class_name, arg):
-        """update an instance based on ID, attribute name, and attribute value"""
+        """update an instance based on ID, attribute name, & attribute value"""
         '''get id'''
         args = re.findall('"([^"]+)",?', arg)
         id_list = [k.split(".")[1] for k in instance_dict]
