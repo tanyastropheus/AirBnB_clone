@@ -102,9 +102,8 @@ class HBNBCommand(cmd.Cmd):
                 print("** no instance found **")
             else:
                 """delete from FileStorage.__objects"""
-                if instance in stored_objects.keys():
-                    del stored_objects[instance]
-                    """overwrite the new data to file.json"""
+                del stored_objects[instance]
+                """overwrite the new data to file.json"""
                 models.storage.save()
 
     def do_all(self, arg):
@@ -180,8 +179,9 @@ class HBNBCommand(cmd.Cmd):
                     if match_fname.group() == 'show':
                         '''call show()'''
                         self.show(stored_objects, args[0], args[1])
-                    #elif match_fname.group() == 'destroy':
-                        #'''call destroy'''
+                    elif match_fname.group() == 'destroy':
+                        '''call destroy'''
+                        self.destroy(stored_objects, args[0], args[1])
         else:
             super().default(arg)
 
@@ -214,6 +214,24 @@ class HBNBCommand(cmd.Cmd):
                 print("** no instance found **")
             else:
                 print(instance_dict[instance])
+
+        else:
+            print("** instance id missing **")
+
+    def destroy(self, instance_dict, class_name, arg):
+        """retrieve the an instance based on ID"""
+        '''get id'''
+        print("string passed:", arg)
+        inst_id = re.search('\("(.+)"\)', arg)
+
+        '''if <id> exists'''
+        if inst_id:
+            '''need to turn id into str for formatting'''
+            instance = "{}.{}".format(class_name, inst_id.group(1))
+            if instance not in instance_dict:
+                print("** no instance found **")
+            else:
+                del instance_dict[instance]
 
         else:
             print("** instance id missing **")
