@@ -205,7 +205,7 @@ class HBNBCommand(cmd.Cmd):
     def show(self, instance_dict, class_name, arg):
         """retrieve the an instance based on ID"""
         '''get id'''
-        print("string passed:", arg)
+
         inst_id = re.search('\("(.+)"\)', arg)
 
         '''if <id> exists'''
@@ -223,7 +223,7 @@ class HBNBCommand(cmd.Cmd):
     def destroy(self, instance_dict, class_name, arg):
         """destroy an instance based on ID"""
         '''get id'''
-        print("string passed:", arg)
+
         inst_id = re.search('\("(.+)"\)', arg)
 
         '''if <id> exists'''
@@ -243,8 +243,6 @@ class HBNBCommand(cmd.Cmd):
         '''get id'''
         args = re.findall('"([^"]+)",?', arg)
         id_list = [k.split(".")[1] for k in instance_dict]
-        print(args)
-        print(class_name)
 
         if class_name not in models.classes:
             print("** class doesn't exist **")
