@@ -73,9 +73,7 @@ class HBNBCommand(cmd.Cmd):
 
             else:
                 """search matching class object"""
-                for k, v in stored_objects.items():
-                    if k == instance:
-                        print(v)
+                print(stored_objects[instance])
 
     def do_destroy(self, arg):
         """
@@ -204,19 +202,19 @@ class HBNBCommand(cmd.Cmd):
 
     def show(self, instance_dict, class_name, arg):
         """retrieve the an instance based on ID"""
-        '''get ("<id>") with parentheses &  double quotes'''
-        id_pre = re.search('\("([a-z0-9-]+)"\)', arg)
+        '''get id'''
+        print("string passed:", arg)
+        inst_id = re.search('\("(.+)"\)', arg)
+
         '''if <id> exists'''
-        if id_pre:
-            '''get <id> as a re object; need to turn into str for formatting'''
-            inst_id = re.search('([a-z0-9-]+)', id_pre.group())
-            instance = "{}.{}".format(class_name, str(inst_id.group()))
+        if inst_id:
+            '''need to turn id into str for formatting'''
+            instance = "{}.{}".format(class_name, inst_id.group(1))
             if instance not in instance_dict:
                 print("** no instance found **")
             else:
-                for k, v in instance_dict.items():
-                    if k == instance:
-                        print(v)
+                print(instance_dict[instance])
+
         else:
             print("** instance id missing **")
 
