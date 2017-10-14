@@ -147,24 +147,19 @@ class HBNBCommand(cmd.Cmd):
         stored_objects = models.storage.all()
         id_list = [k.split(".")[1] for k in stored_objects.keys()]
 
-        if len(args) == 0:
-            print("** class name missing **")
-        elif args[0] not in models.classes:
-            print("** class doesn't exist **")
-        elif len(args) == 1:
-            print("** instance id missing **")
-        elif args[1] not in id_list:
-            print("** no instance found **")
-        elif len(args) == 2:
-            print("** attribute name missing **")
-        elif len(args) == 3:
-            print("** value missing **")
-        else:
-            instance = "{}.{}".format(args[0], args[1])
-            obj = stored_objects[instance]
-            '''convert to the right attribute value type'''
-            setattr(obj, args[2], args[3])
-            models.storage.save()
+        if self.basic_errs(args):
+            if args[1] not in id_list:
+                print("** no instance found **")
+            elif len(args) == 2:
+                print("** attribute name missing **")
+            elif len(args) == 3:
+                print("** value missing **")
+            else:
+                instance = "{}.{}".format(args[0], args[1])
+                obj = stored_objects[instance]
+                '''convert to the right attribute value type'''
+                setattr(obj, args[2], args[3])
+                models.storage.save()
 
     def default(self, arg):
         """
