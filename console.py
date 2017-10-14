@@ -159,19 +159,7 @@ class HBNBCommand(cmd.Cmd):
                 self.update(args[0], new_args, stored_objects)
 
     def default(self, arg):
-        """
-        add the following functionalities to the commandline:
-
-        <class name>.all(): retrieve all instances of a class
-        <class name>.count(): retrieve the number of instances of a class
-        <class name>.show(<id>): retrieve the an instance based on its ID
-        <class name>.destroy(<id>): destroy an instance based on its ID
-        <class name>.update(<id>, <attribute name>, <attribute value>): update
-        an instance based on its ID
-        <class name>.update(<id>, <dictionary representation>): update an
-        instance based on its ID with a dictionary
-
-        """
+        """add additional functionalities to the commandline"""
         args = arg.split('.')
         stored_objects = models.storage.all()
         if len(args) == 2:
