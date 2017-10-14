@@ -30,22 +30,6 @@ class HBNBCommand(cmd.Cmd):
         """
         pass
 
-    def do_create(self, arg):
-        """Creates a new instance of BaseModel"""
-
-        args = shlex.split(arg)
-        if len(args) == 0:
-            print("** class name missing **")
-
-        elif args[0] in models.classes:
-            new_instance = models.classes[args[0]]()
-            print(new_instance.id)
-            """saves it (to the JSON file) """
-            models.storage.save()
-
-        else:
-            print("** class doesn't exist **")
-
     def check_instance(self, class_name, inst_id, stored_objects):
         """
         check if the instance exists & prints an error message if it doesn't.
@@ -68,23 +52,54 @@ class HBNBCommand(cmd.Cmd):
             instance = False
         return instance
 
-    def do_show(self, arg):
-        """Prints the string representation of an instance"""
-        args = shlex.split(arg)
-        """get FileStorage.__objects"""
-        stored_objects = models.storage.all()
+    def basic_errs(self, args):
+        """
+        Check and print out basic errors.
 
+        Args:
+            args (list): list of parsed command arguments.
+
+        Returns:
+            True if it fits one of the error categories;
+            False if not.
+        """
         if len(args) == 0:
+            '''if class name is missing'''
             print("** class name missing **")
 
         elif args[0] not in models.classes:
             print("** class doesn't exist **")
 
         elif len(args) == 1:
-            """missing id"""
             print("** instance id missing **")
 
         else:
+            return True
+        return False
+
+    def do_create(self, arg):
+        """Creates a new instance of BaseModel"""
+
+        args = shlex.split(arg)
+        if len(args) == 0:
+            print("** class name missing **")
+
+        elif args[0] in models.classes:
+            new_instance = models.classes[args[0]]()
+            print(new_instance.id)
+            """saves it (to the JSON file) """
+            models.storage.save()
+
+        else:
+            print("** class doesn't exist **")
+
+    def do_show(self, arg):
+        """Prints the string representation of an instance"""
+        args = shlex.split(arg)
+        """get FileStorage.__objects"""
+        stored_objects = models.storage.all()
+
+        if self.basic_errs(args):
             '''check if instance exists'''
             instance = self.check_instance(args[0], args[1], stored_objects)
             if instance:
@@ -97,7 +112,6 @@ class HBNBCommand(cmd.Cmd):
         """
         args = shlex.split(arg)
         stored_objects = models.storage.all()
-        id_list = [k.split(".")[1] for k in stored_objects.keys()]
 
         if len(args) == 0:
             '''if class name is missing'''
