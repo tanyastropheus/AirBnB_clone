@@ -39,7 +39,6 @@ class HBNBCommand(cmd.Cmd):
             inst_id (str): instance id
             stored_objects(dict): dictionary of instance "<class_name>.<id>"
                                   and instance objects
-
         Returns:
             "<class_name>.<id>" if the instance exists, False otherwise
 
@@ -113,17 +112,7 @@ class HBNBCommand(cmd.Cmd):
         args = shlex.split(arg)
         stored_objects = models.storage.all()
 
-        if len(args) == 0:
-            '''if class name is missing'''
-            print("** class name missing **")
-
-        elif args[0] not in models.classes:
-            print("** class doesn't exist **")
-
-        elif len(args) == 1:
-            print("** instance id missing **")
-
-        else:
+        if self.basic_errs(args):
             '''check if instance exists'''
             instance = self.check_instance(args[0], args[1], stored_objects)
             if instance:
