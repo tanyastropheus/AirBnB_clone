@@ -32,7 +32,7 @@ class HBNBCommand(cmd.Cmd):
 
     def check_instance(self, class_name, inst_id, stored_objects):
         """
-        check if the instance exists & prints an error message if it doesn't.
+        Check if the instance exists & prints an error message if it doesn't.
 
         Args:
             class_name (str): class name of the instance
@@ -131,7 +131,7 @@ class HBNBCommand(cmd.Cmd):
 
         if len(args) == 1:  # if given class name
             if args[0] in models.classes:  # if class name exists
-                self.all(stored_objects, args)
+                self.all(args[0], stored_objects)
 
             else:
                 print("** class doesn't exist **")
@@ -155,11 +155,8 @@ class HBNBCommand(cmd.Cmd):
             elif len(args) == 3:
                 print("** value missing **")
             else:
-                instance = "{}.{}".format(args[0], args[1])
-                obj = stored_objects[instance]
-                '''convert to the right attribute value type'''
-                setattr(obj, args[2], args[3])
-                models.storage.save()
+                new_args = args[1:]
+                self.update(args[0], new_args, stored_objects)
 
     def default(self, arg):
         """
@@ -179,97 +176,132 @@ class HBNBCommand(cmd.Cmd):
         stored_objects = models.storage.all()
         if len(args) == 2:
             if args[0] in models.classes:
-                if args[1] == 'all()':
-                    self.all(stored_objects, args)
-                elif args[1] == 'count()':
-                    self.count(stored_objects, args)
-                else:
-                    '''retreive function name'''
-                    match_fname = re.match('([a-z]+)', args[1])
-                    if match_fname.group() == 'show':
-                        '''call show()'''
-                        self.show(stored_objects, args[0], args[1])
-                    elif match_fname.group() == 'destroy':
-                        '''call destroy'''
-                        self.destroy(stored_objects, args[0], args[1])
-                    elif match_fname.group() == 'update':
-                        self.update(stored_objects, args[0], args[1])
+                self.get_func(args[0], args[1], stored_objects)
+            else:
+                print("** class doesn't exist **")
         else:
             super().default(arg)
 
-    def all(self, instance_dict, args):
-        """print out corresponding instances"""
-        for k, v in instance_dict.items():
-            if args[0] in k:
+    def get_func(self, class_name, arg, stored_objects):
+        """
+        Parse the argument from commandline functions;
+        Invoke appropriate function & print corresponding error messages.
+
+        Args:
+            arg (string): <func_name>("arg_1". "arg_2",...)
+
+        """
+        find_func = re.match('([a-z]+)', arg)  # returns a matching object
+        func_name = find_func.group()
+        args = re.findall('"([^"]+)",?', arg)  # return a list of arguments
+
+        if len(args) == 0:
+            if func_name == "all":
+                self.all(class_name, stored_objects)
+            elif func_name == "count":
+                self.count(class_name, stored_objects)
+            else:
+                print("** instance id missing **")
+
+        elif len(args) == 1:
+            if self.check_instance(class_name, args[0], stored_objects):
+                if func_name == "show":
+                    self.show(class_name, args[0], stored_objects)
+                elif func_name == "destroy":
+                    self.destroy(class_name, args[0], stored_objects)
+                elif func_name == "update":
+                    print("** attribute name missing **")
+
+        elif len(args) == 2 and func_name == "update":
+            print("** value missing **")
+
+        elif len(args) == 3 and func_name == "update":
+            if self.check_instance(class_name, args[0], stored_objects):
+                self.update(class_name, args, stored_objects)
+
+
+    def all(self, class_name, stored_objects):
+        """
+        Print out corresponding instances.
+
+        Args:
+            class_name (str): class the instance belongs to.
+            stored_object (dict): dictionary of <class_name>.<id> and
+                                  corresponding instance objects.
+
+        """
+        for k, v in stored_objects.items():
+            if class_name in k:
                 print(v)
 
-    def count(self, instance_dict, args):
-        """count the number of instances corresponding to the class"""
+    def count(self, class_name, stored_objects):
+        """
+        Count the number of instances corresponding to the class.
+
+        Args:
+            class_name (str): class the instance belongs to.
+            stored_object (dict): dictionary of <class_name>.<id> and
+                                  corresponding instance objects.
+
+        """
         count = 0
-        for k in instance_dict:
+        for k in stored_objects:
             inst_list = k.split('.')
-            if inst_list[0] == args[0]:
+            if inst_list[0] == class_name:
                 count += 1
         print(count)
 
-    def show(self, instance_dict, class_name, arg):
-        """retrieve the an instance based on ID"""
-        '''get id'''
+    def show(self, class_name, inst_id, stored_objects):
+        """
+        Print an instance based on class name and id.
 
-        inst_id = re.search('\("(.+)"\)', arg)
+        Args:
+            class_name (str): class the instance belongs to.
+            inst_id (str): id of the instance.
+            stored_object (dict): dictionary of <class_name>.<id> and
+                                  corresponding instance objects.
 
-        '''if <id> exists'''
-        if inst_id:
-            '''need to turn id into str for formatting'''
-            instance = "{}.{}".format(class_name, inst_id.group(1))
-            if instance not in instance_dict:
-                print("** no instance found **")
-            else:
-                print(instance_dict[instance])
-
-        else:
-            print("** instance id missing **")
-
-    def destroy(self, instance_dict, class_name, arg):
-        """destroy an instance based on ID"""
-        '''get id'''
-
-        inst_id = re.search('\("(.+)"\)', arg)
-
-        '''if <id> exists'''
-        if inst_id:
-            '''need to turn id into str for formatting'''
-            instance = "{}.{}".format(class_name, inst_id.group(1))
-            if instance not in instance_dict:
-                print("** no instance found **")
-            else:
-                del instance_dict[instance]
-
-        else:
-            print("** instance id missing **")
-
-    def update(self, instance_dict, class_name, arg):
-        """update an instance based on ID, attribute name, & attribute value"""
-        '''get id'''
-        args = re.findall('"([^"]+)",?', arg)
-        id_list = [k.split(".")[1] for k in instance_dict]
-
-        if class_name not in models.classes:
-            print("** class doesn't exist **")
-        elif len(args) == 0:
-            print("** instance id missing **")
-        elif args[0] not in id_list:
+        """
+        instance = "{}.{}".format(class_name, inst_id)
+        if instance not in stored_objects:
             print("** no instance found **")
-        elif len(args) == 1:
-            print("** attribute name missing **")
-        elif len(args) == 2:
-            print("** value missing **")
         else:
-            instance = "{}.{}".format(class_name, args[0])
-            obj = instance_dict[instance]
-            '''convert to the right attribute value type'''
-            setattr(obj, args[1], args[2])
-            models.storage.save()
+            print(stored_objects[instance])
+
+    def destroy(self, class_name, inst_id, stored_objects):
+        """
+        Destroy an instance based on class name and id.
+
+        Args:
+            class_name (str): class the instance belongs to.
+            inst_id (str): id of the instance.
+            stored_object (dict): dictionary of <class_name>.<id> and
+                                  corresponding instance objects.
+
+        """
+        instance = "{}.{}".format(class_name, inst_id)
+        if instance not in stored_objects:
+            print("** no instance found **")
+        else:
+            del stored_objects[instance]
+
+    def update(self, class_name, args, stored_objects):
+        """
+        Update an instance based on ID, attribute name, & attribute value.
+
+        Args:
+            class_name (str): class the instance belongs to.
+            args (list): list of args => ["<id>", "<attr_name>", "<attr_value>"]
+            stored_object (dict): dictionary of <class_name>.<id> and
+                                  corresponding instance objects.
+
+        """
+        id_list = [k.split(".")[1] for k in stored_objects]
+        instance = "{}.{}".format(class_name, args[0])
+        obj = stored_objects[instance]
+        '''convert to the right attribute value type'''
+        setattr(obj, args[1], args[2])
+        models.storage.save()
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
