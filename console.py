@@ -85,6 +85,7 @@ class HBNBCommand(cmd.Cmd):
             print("** instance id missing **")
 
         else:
+            '''check if instance exists'''
             instance = self.check_instance(args[0], args[1], stored_objects)
             if instance:
                 print(stored_objects[instance])
@@ -94,7 +95,7 @@ class HBNBCommand(cmd.Cmd):
         Deletes an instance based on the class name and id & save the change
         into the JSON file.
         """
-        args = shlex.split(args)
+        args = shlex.split(arg)
         stored_objects = models.storage.all()
         id_list = [k.split(".")[1] for k in stored_objects.keys()]
 
@@ -109,12 +110,9 @@ class HBNBCommand(cmd.Cmd):
             print("** instance id missing **")
 
         else:
-            """get '<class_name>.id' to FileStorage.__objects key format"""
-            instance = "{}.{}".format(args[0], arg[1])
-            if instance not in stored_objects:
-                """given id does not exist"""
-                print("** no instance found **")
-            else:
+            '''check if instance exists'''
+            instance = self.check_instance(args[0], args[1], stored_objects)
+            if instance:
                 """delete from FileStorage.__objects"""
                 del stored_objects[instance]
                 """overwrite the new data to file.json"""
