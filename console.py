@@ -219,7 +219,6 @@ class HBNBCommand(cmd.Cmd):
             if self.check_instance(class_name, args[0], stored_objects):
                 self.update(class_name, args, stored_objects)
 
-
     def all(self, class_name, stored_objects):
         """
         Print out corresponding instances.
@@ -291,7 +290,7 @@ class HBNBCommand(cmd.Cmd):
 
         Args:
             class_name (str): class the instance belongs to.
-            args (list): list of args => ["<id>", "<attr_name>", "<attr_value>"]
+            args (list): list of args =>["<id>", "<attr_name>", "<attr_value>"]
             stored_object (dict): dictionary of <class_name>.<id> and
                                   corresponding instance objects.
 
