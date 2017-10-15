@@ -181,31 +181,37 @@ class HBNBCommand(cmd.Cmd):
         """
         find_func = re.match('([a-z]+)', arg)  # returns a matching object
         func_name = find_func.group()
-        args = re.findall('"([^"]+)",?', arg)  # return a list of arguments
+        '''parse by dictionary'''
+        attr_dict = re.search('(\{.+\})', arg)  # attr_dict is a matching object
+        if attr_dict is not None::
+            '''call update_from_dict'''
+            self.update_from_dict(class_name, args, stored_objects)
+        else:
+            args = re.findall('"([^"]+)",?', arg)  # return a list of arguments
 
-        if len(args) == 0:
-            if func_name == "all":
-                self.all(class_name, stored_objects)
-            elif func_name == "count":
-                self.count(class_name, stored_objects)
-            else:
-                print("** instance id missing **")
+            if len(args) == 0:
+                if func_name == "all":
+                    self.all(class_name, stored_objects)
+                elif func_name == "count":
+                    self.count(class_name, stored_objects)
+                else:
+                    print("** instance id missing **")
 
-        elif len(args) == 1:
-            if self.check_instance(class_name, args[0], stored_objects):
-                if func_name == "show":
-                    self.show(class_name, args[0], stored_objects)
-                elif func_name == "destroy":
-                    self.destroy(class_name, args[0], stored_objects)
-                elif func_name == "update":
-                    print("** attribute name missing **")
+            elif len(args) == 1:
+                if self.check_instance(class_name, args[0], stored_objects):
+                    if func_name == "show":
+                        self.show(class_name, args[0], stored_objects)
+                    elif func_name == "destroy":
+                        self.destroy(class_name, args[0], stored_objects)
+                    elif func_name == "update":
+                        print("** attribute name missing **")
 
-        elif len(args) == 2 and func_name == "update":
-            print("** value missing **")
+            elif len(args) == 2 and func_name == "update":
+                print("** value missing **")
 
-        elif len(args) == 3 and func_name == "update":
-            if self.check_instance(class_name, args[0], stored_objects):
-                self.update(class_name, args, stored_objects)
+            elif len(args) == 3 and func_name == "update":
+                if self.check_instance(class_name, args[0], stored_objects):
+                    self.update(class_name, args, stored_objects)
 
     def all(self, class_name, stored_objects):
         """
@@ -289,6 +295,30 @@ class HBNBCommand(cmd.Cmd):
         '''convert to the right attribute value type'''
         setattr(obj, args[1], args[2])
         models.storage.save()
+
+    def update_from_dict(self, class_name, arg, stored_objects):
+        """
+        Updates an instance based on ID from a dictionary.
+
+        Args:
+            class_name (str): class the instance belongs to.
+            arg (str) = 'update("<id>", "{dict of attr_name & attr_value}")'
+            stored_object (dict): dictionary of <class_name>.<id> and
+                                  corresponding instance objects.
+
+        """
+        p = re.search('"([^"]+)"', arg)   # need to make sure this returns none when id is missing
+        inst_id = p.group(1)
+        p = re.search('(\{.+\})', arg)
+        attr_dict = p.group(1)
+        '''turn attr_dict from type str to type dict'''
+        attr_dict = json.loads(attr_dict)
+
+        instance = "{}.{}".format(class_name, inst_id)
+        if instance in stored_objects:
+            stored_objects[instance].update(attr_dict)
+        else:
+            print("** no instance found **")
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
