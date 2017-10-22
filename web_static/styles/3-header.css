@@ -1,7 +1,7 @@
 header {
     height: 70px;
     width: 100%;
-    /* background-color: white; why does developer tool show this is redundant? */
+    /* background-color: white by chrome default */
     border-bottom: 1px solid #CCCCCC;
 }
 .logo {
